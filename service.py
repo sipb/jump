@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import redirect, render_template
 from flask.views import View
 
 class HomeView(View):
@@ -10,9 +10,34 @@ class HomeView(View):
 
 class LookupView(View):
     methods = ['GET']
+
+    def lookup(self, identifier):
+        return None
     
     def dispatch_request(self, path):
-        return render_template("404.html"), 404
+        """ Generates redirect to expanded URL.
+
+        Assumes path is in the format
+            identifier
+        or
+            identifier/optional/appended/path,
+
+        which expands to
+            lookup(identifier)
+        or
+            lookup(identifier)/optional/appended/path
+        """
+        identifier, sep, appended_path = path.partition('/')
+        lookup_url = self.lookup(identifier)
+        print identifier
+        if not lookup_url:
+            return render_template("404.html"), 404
+
+        # It's important that we use `sep`, which might be an empty string if
+        # there's no slash in path.
+        redirect_url = "%s%s%s" % (lookup_url, sep, appended_path)
+        print redirect_url
+        return redirect(redirect_url, 301)
 
 class ManageView(View):
     methods = ['GET', 'POST']
