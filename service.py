@@ -16,7 +16,7 @@ class LookupView(View):
 
 class ManageView(View):
     methods = ['GET', 'POST']
-    template_name = "default_home.html"
+    template_name = "default_manage.html"
 
     def dispatch_request(self):
         return render_template(self.template_name)
