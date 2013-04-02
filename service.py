@@ -29,14 +29,12 @@ class LookupView(View):
         """
         identifier, sep, appended_path = path.partition('/')
         lookup_url = self.lookup(identifier)
-        print identifier
         if not lookup_url:
             return render_template("404.html"), 404
 
         # It's important that we use `sep`, which might be an empty string if
         # there's no slash in path.
         redirect_url = "%s%s%s" % (lookup_url, sep, appended_path)
-        print redirect_url
         return redirect(redirect_url, 301)
 
 class ManageView(View):
