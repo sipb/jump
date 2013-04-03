@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request
+=======
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
+>>>>>>> Adds database backing for g/ to save and query redirects
+
+from util import require_env
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = require_env('DB_URI')
+db = SQLAlchemy(app)
 
 from service import Service
 from g.gservice import GService
-
-app = Flask(__name__)
 
 def register(app, services):
     """Adds the sets of URLs for each service on the app.
@@ -19,10 +28,13 @@ def register(app, services):
         app.add_url_rule(base_url + 'manage/', view_func=service.manage_view())
         app.add_url_rule(base_url + '<path>', view_func=service.lookup_view())
 
+def init_db():
+    from g.models import GRedirect
+    db.create_all()
+
 services = {
     'g': GService(),
 }
-
 register(app, services)
 
 @app.route('/')
