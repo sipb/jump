@@ -2,12 +2,20 @@ from flask import current_app, redirect, render_template, request
 from flask.views import MethodView
 
 class HomeView(MethodView):
+    """Renders a home page for the service.
+
+    Override template_name to render custom template.
+    """
     template_name = 'default_home.html'
 
     def get(self):
         return render_template(self.template_name)
 
 class LookupView(MethodView):
+    """Core URL expansion view, generates redirects.
+
+    Override lookup to return URL identifier maps to, or None if non-existent.
+    """
 
     def lookup(self, identifier):
         return None
@@ -33,10 +41,21 @@ class LookupView(MethodView):
         # It's important that we use `sep`, which might be an empty string if
         # there's no slash in path.
         redirect_url = "%s%s%s" % (lookup_url, sep, appended_path)
-        return redirect(redirect_url, 301)
+        return redirect(redirect_url)
 
 class ManageView(MethodView):
+    """Provides view to make any data changes.
+
+    All potentially dangerous operations should be done through the manage
+    view. By default, forces https. Set envvar HTTPS=false to disable.
+
+    Override template_name to render custom template.
+    Override post to process any POST-ed data.
+    """
     template_name = 'default_manage.html'
+
+    def post(self):
+        return redirect(request.path)
 
     def get(self):
         if (not current_app.debug) and request.url.startswith('http://'):
