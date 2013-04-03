@@ -2,9 +2,15 @@
 {% block title %}g: MIT's link shortener{% endblock %}
 {% block content %}
   <h1>g/: Add a URL</h1>
+  <p>Enter the URL to be shortened below. If you'd like something other
+  than a random series of letters (e.g. g/short-name), enter a short
+  name as well.</p>
+  {% if error %}
+    {{ error }}
+  {% endif %}
   <form action="" method="POST">
-    <input type="text" name="identifier" />
-    <input type="text" name="url" />
+    <input type="text" name="url" placeholder="URL" />
+    <input type="text" name="identifier" placeholder="Short name" />
     <input type="submit" />
   </form>
 {% endblock %}
