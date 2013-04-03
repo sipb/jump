@@ -15,8 +15,8 @@ def register(app, services):
         base_url = '/%s/' % service_name
         print "registering %s" % base_url
         app.add_url_rule(base_url, view_func=service.home_view())
-        app.add_url_rule(base_url + '<path>', view_func=service.lookup_view())
         app.add_url_rule(base_url + 'manage/', view_func=service.manage_view())
+        app.add_url_rule(base_url + '<path>', view_func=service.lookup_view())
 
 register(app, {
     'g': GService(),

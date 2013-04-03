@@ -1,3 +1,6 @@
+import os
+from urlparse import urlparse
+
 from flask import current_app, redirect, render_template, request
 from flask.views import MethodView
 
@@ -58,9 +61,11 @@ class ManageView(MethodView):
         return redirect(request.path)
 
     def get(self):
-        if (not current_app.debug) and request.url.startswith('http://'):
-            secure_url = request.url.replace('http://', 'https://', 1)
-            return redirect(secure_url, 301)
+        disable_https = (os.environ.get('HTTPS', 'true') == 'false')
+        if (not disable_https) and request.url.startswith('http://'):
+            parsed_url = urlparse(request.url)
+            secure_url = "https://%s:444%s" % (parsed_url.hostname, parsed_url.path)
+            return redirect(secure_url, 302)
         return render_template(self.template_name)
 
 class Service:
