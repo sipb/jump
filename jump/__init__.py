@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from service import Service
 from g.gservice import GService
@@ -19,9 +19,15 @@ def register(app, services):
         app.add_url_rule(base_url + 'manage/', view_func=service.manage_view())
         app.add_url_rule(base_url + '<path>', view_func=service.lookup_view())
 
-register(app, {
+services = {
     'g': GService(),
-})
+}
+
+register(app, services)
+
+@app.route('/')
+def main():
+    return render_template('main.html', services=services)
 
 if __name__ == '__main__':
     app.run(debug=True)
