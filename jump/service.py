@@ -65,7 +65,7 @@ class ManageView(MethodView):
         if (not disable_https) and request.url.startswith('http://'):
             parsed_url = urlparse(request.url)
             secure_url = "https://%s:444%s" % (parsed_url.hostname, parsed_url.path)
-            return redirect(secure_url, 302)
+            return redirect(secure_url)
         return render_template(self.template_name)
 
 class Service:
