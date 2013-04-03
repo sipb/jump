@@ -6,7 +6,7 @@
   than a random series of letters (e.g. g/short-name), enter a short
   name as well.</p>
   {% if error %}
-    {{ error }}
+    <p class="error">{{ error }}</p>
   {% endif %}
   <form action="" method="POST">
     <input type="text" name="url" placeholder="URL" />

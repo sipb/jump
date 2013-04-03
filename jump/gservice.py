@@ -11,19 +11,20 @@ class GLookupView(LookupView):
             return 'http://g/'
         return None
 
+def generate_identifier():
+    # TODO: generate unique identifier
+    return ""
+
+def is_taken(identifier):
+    # TODO: check if identifier is taken
+    return False
+
+def create_short_link(identifier, url):
+    # TODO: save short link
+    pass
+
 class GManageView(ManageView):
     template_name = 'g/manage.html'
-
-    def generate_identifier():
-        # TODO: generate unique identifier
-        return ""
-
-    def is_taken(identifier):
-        # TODO: check if identifier is taken
-        return False
-
-    def create_short_link(identifier, url):
-        # TODO: save short link
 
     def post(self):
         url = request.form.get('url', None)
@@ -32,7 +33,7 @@ class GManageView(ManageView):
             return render_template(self.template_name, error=error)
 
         # Ensure URL starts with http:// or https://
-        if not (url.startswith("http://") or url.startswith("https://"):
+        if not (url.startswith("http://") or url.startswith("https://")):
             url = 'http://' + url
 
         identifier = request.form.get('identifier', None)
