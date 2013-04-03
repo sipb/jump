@@ -1,20 +1,18 @@
-from flask import redirect, render_template
-from flask.views import View
+from flask import current_app, redirect, render_template, request
+from flask.views import MethodView
 
-class HomeView(View):
-    methods = ['GET']
+class HomeView(MethodView):
     template_name = "default_home.html"
 
-    def dispatch_request(self):
+    def get(self):
         return render_template(self.template_name)
 
-class LookupView(View):
-    methods = ['GET']
+class LookupView(MethodView):
 
     def lookup(self, identifier):
         return None
     
-    def dispatch_request(self, path):
+    def get(self, path):
         """ Generates redirect to expanded URL.
 
         Assumes path is in the format
@@ -37,11 +35,13 @@ class LookupView(View):
         redirect_url = "%s%s%s" % (lookup_url, sep, appended_path)
         return redirect(redirect_url, 301)
 
-class ManageView(View):
-    methods = ['GET', 'POST']
+class ManageView(MethodView):
     template_name = "default_manage.html"
 
-    def dispatch_request(self):
+    def get(self):
+        if (not current_app.debug) and request.url.startswith('http://'):
+            secure_url = request.url.replace('http://', 'https://', 1)
+            return redirect(secure_url, 301)
         return render_template(self.template_name)
 
 class Service:
