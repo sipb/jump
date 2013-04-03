@@ -1,6 +1,7 @@
 from flask import Flask
+
 from service import Service
-from gservice import GService
+from g.gservice import GService
 
 app = Flask(__name__)
 

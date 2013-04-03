@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request
-from service import HomeView, LookupView, ManageView, Service
+
+from jump.service import HomeView, LookupView, ManageView, Service
 
 class GHomeView(HomeView):
     template_name = 'g/home.html'
