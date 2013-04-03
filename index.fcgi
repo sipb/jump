@@ -13,6 +13,7 @@ class ScriptNameStripper(object):
 
    def __call__(self, environ, start_response):
        environ['SCRIPT_NAME'] = ''
+       environ['HTTPS'] = 'false'
        return self.app(environ, start_response)
 
 app = ScriptNameStripper(app)

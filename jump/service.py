@@ -66,7 +66,11 @@ class ManageView(MethodView):
             parsed_url = urlparse(request.url)
             secure_url = "https://%s:444%s" % (parsed_url.hostname, parsed_url.path)
             return redirect(secure_url)
-        return render_template(self.template_name)
+
+        athena = request.environ.get('SSL_CLIENT_S_DN_Email', None)
+        if not athena:
+            return render_template('401.html'), 401
+        return render_template(self.template_name, athena=athena)
 
 class Service:
     home = HomeView
